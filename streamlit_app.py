@@ -1,17 +1,17 @@
 import streamlit as st
 from PIL import Image
 import numpy as np
-import tensorflow as tf
+from tflite_runtime.interpreter import Interpreter
 
 # --- SETTINGS ---
-MODEL_PATH = "fruit_model.tflite"  # Light model
+MODEL_PATH = "fruit_model.tflite"  # Make sure you upload this file!
 CLASS_NAMES = ["Apple 🍎", "Orange 🍊"]
 IMG_SIZE = (128, 128)
 
-# --- LOAD LIGHTWEIGHT MODEL ---
+# --- LOAD MODEL ---
 @st.cache_resource
 def load_model():
-    interpreter = tf.lite.Interpreter(model_path=MODEL_PATH)
+    interpreter = Interpreter(model_path=MODEL_PATH)
     interpreter.allocate_tensors()
     return interpreter
 
@@ -19,12 +19,10 @@ interpreter = load_model()
 
 # --- PREDICT FUNCTION ---
 def predict_image(img):
-    # Preprocess
     img = img.resize(IMG_SIZE)
     img_array = np.array(img, dtype=np.float32) / 255.0
     img_array = np.expand_dims(img_array, axis=0)
 
-    # Predict
     input_details = interpreter.get_input_details()
     output_details = interpreter.get_output_details()
     interpreter.set_tensor(input_details[0]['index'], img_array)
@@ -55,4 +53,4 @@ if uploaded_file is not None:
     st.info(f"Confidence: {confidence}%")
 
 st.markdown("---")
-st.write("💻 Using TensorFlow Lite for fast & light AI prediction")
+st.write("💻 Using Lightweight TensorFlow Lite Model")
