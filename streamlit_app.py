@@ -6,13 +6,6 @@ import numpy as np
 CLASS_NAMES = ["Apple 🍎", "Orange 🍊"]
 IMG_SIZE = (128, 128)
 
-# --- SIMPLE PREDICTION LOGIC ---
-# Since we can't load heavy model, we use a simple demo logic
-def predict_image(img):
-    # This is just a demo simulation
-    # In real use, you would load your model here
-    return "Apple 🍎" if "apple" in st.session_state else "Orange 🍊", 95.5
-
 # --- UI DESIGN ---
 st.set_page_config(page_title="Fruit Classifier", layout="centered")
 st.title("🍎🍊 Fruit Classification App")
@@ -27,11 +20,10 @@ if uploaded_file is not None:
     img = Image.open(uploaded_file).convert("RGB")
     st.image(img, caption="Uploaded Image", use_column_width=True)
 
-    # Simulate prediction
-    label, confidence = predict_image(img)
-    
-    st.success(f"### Prediction: {label}")
-    st.info(f"Confidence: {confidence}%")
+    # For now, we show a friendly message
+    # Later we can add the model prediction here
+    st.success("✅ Image uploaded successfully!")
+    st.info("This is your working Streamlit app interface.")
 
 st.markdown("---")
 st.write("💻 Created for Machine Learning Project")
